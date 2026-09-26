@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THRESHOLD 阈限</title>
+<meta name="description" content="深入地底防洪站，直面失控的钢铁巨兽。看穿杀招，击穿熔核，用超载火力终结战斗。THRESHOLD 阈限，一款聚焦巨型 Boss 对决的 FPS 游戏。">
+<link rel="icon" href="assets/favicon.png">
+<link rel="alternate" hreflang="zh-CN" href="./">
+<link rel="alternate" hreflang="en" href="en/">
+<link rel="preload" href="fonts/anton-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/noto-sc.css">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+<header class="bar">
+  <a class="mark" href="#top" aria-label="THRESHOLD 阈限 回到顶部"><span class="mark-en">THRESHOLD</span><span class="mark-zh">阈限</span></a>
+  <nav class="nav" aria-label="页面导航">
+    <a href="#fight">战斗</a>
+    <a href="#warden">招式</a>
+    <a href="#evolution">进化</a>
+    <a href="#pipeline">幕后</a>
+  </nav>
+  <a class="lang" href="en/" hreflang="en" lang="en">EN</a>
+</header>
+
+<main>
+
+<!-- ============ HERO · 转盘 ============ -->
+<section class="hero" id="top" data-heat="0">
+  <div class="tt" id="turntable" tabindex="0" role="slider"
+       aria-label="360° 查看阈限守卫，左右拖动或按左右方向键旋转"
+       aria-valuemin="0" aria-valuemax="355" aria-valuenow="0" aria-valuetext="0 度">
+    <canvas id="tt-canvas"></canvas>
+  </div>
+
+  <p class="hero-line">地底深处，巨兽苏醒。<br>击穿核心，关上闸门。</p>
+
+  <h1 class="hero-title">
+    <span class="t-en">THRESHOLD</span>
+    <span class="t-zh">阈限</span>
+  </h1>
+
+  <div class="dial" aria-hidden="true">
+    <div class="dial-read"><span id="tt-deg">000</span>°</div>
+    <div class="dial-ticks" id="tt-ticks"></div>
+    <div class="dial-hint">拖动旋转</div>
+  </div>
+</section>
+
+<!-- ============ 战斗进程 ============ -->
+<section class="fight" id="fight" aria-label="战斗进程">
+  <div class="fight-stage">
+    <div class="shots">
+      <img src="../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/01_arena_gate.jpg" alt="主泵大厅入口，远处的守卫尚未苏醒" loading="lazy" decoding="async" width="1920" height="1080">
+      <img src="../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/02_warden_approach.jpg" alt="阈限守卫张口逼近" loading="lazy" decoding="async" width="1920" height="1080">
+      <img src="../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/05_core_burst.jpg" alt="胸前的熔核被击穿，迸发出火光" loading="lazy" decoding="async" width="1920" height="1080">
+      <img src="../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/08_phase_two.jpg" alt="第二阶段，装甲崩落的守卫扑来" loading="lazy" decoding="async" width="1920" height="1080">
+      <img src="../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/11_overload_flash.jpg" alt="超载光束命中核心" loading="lazy" decoding="async" width="1920" height="1080">
+      <img src="../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/12_killcam.jpg" alt="终结镜头：守卫即将倒在熔炉上方的格栅上" loading="lazy" decoding="async" width="1920" height="1080">
+    </div>
+    <div class="flash" aria-hidden="true"></div>
+
+    <div class="beats">
+      <article class="beat">
+        <h2>拉闸开战</h2>
+        <p>主泵过载，防洪闸无法关闭。其他人已经撤离，只剩你直面守卫。</p>
+      </article>
+      <article class="beat">
+        <h2>巨兽苏醒</h2>
+        <p>它从未断电。在它眼里，你就是需要清除的故障。</p>
+      </article>
+      <article class="beat">
+        <h2>击穿核心</h2>
+        <p>避开重砸，跃过冲击波。趁熔核暴露，把火力倾泻进去。</p>
+      </article>
+      <article class="beat">
+        <h2>装甲崩裂</h2>
+        <p>胸甲崩裂，周身亮起血红光芒。下一轮猛攻，只会更狠。</p>
+      </article>
+      <article class="beat">
+        <h2>超载终结</h2>
+        <p>攒满 13 格能量，按下 Q。蓝色光束贯穿核心，一记暴击结束战斗。</p>
+      </article>
+      <article class="beat">
+        <h2>闸门合拢</h2>
+        <p>最后一枪，巨兽轰然倒地。镜头拉远，闸门终于合拢。</p>
+      </article>
+    </div>
+
+    <nav class="beat-nav" aria-label="选择战斗阶段">
+      <button type="button" aria-label="拉闸开战"></button>
+      <button type="button" aria-label="巨兽苏醒"></button>
+      <button type="button" aria-label="击穿核心"></button>
+      <button type="button" aria-label="装甲崩裂"></button>
+      <button type="button" aria-label="超载终结"></button>
+      <button type="button" aria-label="闸门合拢"></button>
+    </nav>
+  </div>
+</section>
+
+<!-- ============ 击杀过场 ============ -->
+<section class="killcam" data-heat="1" aria-label="终结动画">
+  <figure class="cg cg-main">
+    <img src="../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/13_cg_detonation.jpg" alt="终结动画：胸前的熔核引爆" loading="lazy" decoding="async" width="1920" height="814">
+  </figure>
+  <div class="cg-pair">
+    <figure class="cg"><img src="../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/14_cg_roar.jpg" alt="终结动画：守卫发出最后的咆哮" loading="lazy" decoding="async" width="1920" height="814"></figure>
+    <figure class="cg"><img src="../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/15_cg_fall.jpg" alt="终结动画：守卫倒下" loading="lazy" decoding="async" width="1920" height="814"></figure>
+  </div>
+</section>
+
+<!-- ============ 读招 ============ -->
+<section class="warden" id="warden" data-heat="0.85">
+  <div class="warden-head">
+    <h2 class="big">看穿杀招</h2>
+    <p>高过厂房立柱的四足维护机，胸前燃烧着一颗裸露的熔核。五种杀招，步步紧逼。看准破绽，再扣下扳机。</p>
+  </div>
+
+  <div class="warden-body">
+    <ol class="moves">
+      <li><h3>前足重砸</h3><p>避开砸击中心，跃过向外扩散的冲击波。</p></li>
+      <li><h3>核心光束</h3><p>光束会锁定你的位置，向侧面闪避才能脱身。</p></li>
+      <li><h3>熔渣轰炸</h3><p>熔渣从三十多米高处砸下，看准落点，及时躲开。</p></li>
+      <li><h3>高速冲撞</h3><p>庞大的身躯迎面冲来，别挡在它的冲锋路线上。</p></li>
+      <li><h3>尾部横扫</h3><p>拉开距离，跳过贴地袭来的冲击波。</p></li>
+    </ol>
+    <figure class="warden-shot">
+      <img src="../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/09_core_beam.jpg" alt="核心光束：一道炽热的光束扫过地面" loading="lazy" decoding="async" width="1920" height="1080">
+      <figcaption>核心光束袭来，向侧面闪避。</figcaption>
+    </figure>
+  </div>
+
+  <div class="arms">
+    <h2 class="arms-title">火力全开</h2>
+    <dl>
+      <div><dt>重型连发步枪</dt><dd>30 发弹匣，持续火力压制。稳住枪口，点射弱点。</dd></div>
+      <div><dt>破拆霰弹枪</dt><dd>趁它停下散热，贴近开火。一枪，轰开胸甲。</dd></div>
+      <div><dt>超载 <kbd>Q</kbd></dt><dd>攒满 13 格能量，释放蓝色光束。直击核心，以致命暴击收场。</dd></div>
+    </dl>
+    <p class="feel">枪口猛跳，弹壳飞溅，每一次命中都干脆有力。巨兽砸地，脚下的战场随之震颤。</p>
+  </div>
+</section>
+
+<!-- ============ 进化史 ============ -->
+<section class="evo" id="evolution" aria-label="巨兽进化">
+  <div class="evo-stage">
+    <div class="evo-head">
+      <h2 class="big">巨兽进化</h2>
+      <div class="evo-index" role="tablist" aria-label="选择开发阶段">
+        <button type="button" role="tab" aria-selected="true">S1</button>
+        <button type="button" role="tab" aria-selected="false">S2</button>
+        <button type="button" role="tab" aria-selected="false">S3</button>
+        <button type="button" role="tab" aria-selected="false">S4</button>
+        <button type="button" role="tab" aria-selected="false">S5</button>
+      </div>
+    </div>
+
+    <div class="evo-track">
+      <article class="stage" data-heat="0" data-video="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s1_fight.mp4">
+        <div class="stage-media scan">
+          <img src="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s1_idle.jpg" data-idle="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s1_idle.jpg" alt="S1：初版原型，圆柱形 Boss 顶着一颗橙色光球" loading="lazy" decoding="async" width="1600" height="900">
+        </div>
+        <div class="stage-text"><span class="stage-id">S1</span><h3>初始原型</h3><p>最初的 Boss 只是一根圆柱，核心是一颗橙色光球。战场空旷，灯光冷冽。</p></div>
+      </article>
+      <article class="stage" data-heat="0.12" data-video="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s2_fight.mp4">
+        <div class="stage-media">
+          <img src="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s2_idle.jpg" data-idle="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s2_idle.jpg" alt="S2：四足造型的守卫首次出现在战场中" loading="lazy" decoding="async" width="1600" height="900">
+        </div>
+        <div class="stage-text"><span class="stage-id">S2</span><h3>巨兽成形</h3><p>四足巨兽初具轮廓，战场四周立起护栏。</p></div>
+      </article>
+      <article class="stage" data-heat="0.3" data-video="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s3_fight.mp4">
+        <div class="stage-media">
+          <img src="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s3_idle.jpg" data-idle="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s3_idle.jpg" alt="S3：守卫披上金属装甲，口中亮起橙光" loading="lazy" decoding="async" width="1600" height="900">
+        </div>
+        <div class="stage-text"><span class="stage-id">S3</span><h3>钢铁之躯</h3><p>金属装甲覆上身躯，口中亮起橙光。你手里，也多了一把铜色手炮。</p></div>
+      </article>
+      <article class="stage" data-heat="0.55" data-video="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s4_fight.mp4">
+        <div class="stage-media">
+          <img src="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s4_idle.jpg" data-idle="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s4_idle.jpg" alt="S4：胸口熔核外露，玩家手持磁轨步枪" loading="lazy" decoding="async" width="1600" height="900">
+        </div>
+        <div class="stage-text"><span class="stage-id">S4</span><h3>核心暴露</h3><p>熔核暴露，弱点锁定。你有了磁轨步枪，也能跳跃闪避、操作场内设施。</p></div>
+      </article>
+      <article class="stage" data-heat="1" data-video="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s5_fight.mp4">
+        <div class="stage-media">
+          <img src="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s5_idle.jpg" data-idle="../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s5_idle.jpg" alt="S5：熔炉战场中的阈限守卫" loading="lazy" decoding="async" width="1600" height="900">
+        </div>
+        <div class="stage-text"><span class="stage-id">S5</span><h3>熔炉决战</h3><p>战场架在熔炉坑上方。守卫有了如今的模样，最后的对决在此展开。</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 幕后 · 资产管线 ============ -->
+<section class="pipe" id="pipeline" data-heat="0.2">
+  <div class="pipe-head">
+    <h2 class="big">巨兽诞生</h2>
+    <p>守卫最初由 Meshy 和 Tripo 生成模型，经过动作调整与 Blender 渲染，才有了你眼前的模样。</p>
+  </div>
+
+  <div class="pipe-grid">
+    <figure class="p-step p-meshy">
+      <img src="../Threshold_宣传素材包_2026-09-24/04_资产管线配图/起点_Meshy模型.jpg" alt="Meshy 生成的初版模型：带尖刺与尾钩的机械兽" loading="lazy" decoding="async" width="960" height="760">
+      <figcaption><span class="ver">起点</span><b>Meshy</b>最初的设计：尖刺、钩状尾巴，以及胸口透出的橙光。</figcaption>
+    </figure>
+    <figure class="p-step p-tripo">
+      <img src="../Threshold_宣传素材包_2026-09-24/04_资产管线配图/v1_Tripo生成.jpg" alt="Tripo 生成的 v1 模型，按部件着色" loading="lazy" decoding="async" width="1000" height="760">
+      <figcaption><span class="ver">v1</span><b>Tripo</b>身形抬高，四肢拉长，背甲与尾巴拆分为独立部件。</figcaption>
+    </figure>
+    <figure class="p-step p-anim">
+      <img src="../Threshold_宣传素材包_2026-09-24/04_资产管线配图/v6_动作剪影.jpg" alt="v6 动作剪影：六组动作的正面与侧面关键帧" loading="lazy" decoding="async" width="1260" height="2160">
+      <figcaption><span class="ver">v6</span><b>动作剪影</b>四种攻击、阶段转换和倒地动画，逐一从正面与侧面检查关键姿态。</figcaption>
+    </figure>
+  </div>
+
+  <figure class="p-step p-render">
+    <img src="../Threshold_宣传素材包_2026-09-24/02_Boss环绕图/boss_8views.jpg" alt="从八个角度展示当前的守卫模型" loading="lazy" decoding="async" width="2880" height="1080">
+    <figcaption><span class="ver">现在</span><b>Blender 5.2</b>从八个角度呈现当前模型。首屏可拖动的 72 帧环绕画面，也由 Blender 渲染完成。</figcaption>
+  </figure>
+</section>
+
+</main>
+
+<footer class="foot" data-heat="1">
+  <a class="foot-mark" href="#top"><span class="t-en">THRESHOLD</span><span class="t-zh">阈限</span></a>
+  <p>一场火力全开的 FPS Boss 对决。平台与发售信息，敬请期待。</p>
+  <a class="foot-top" href="#top">返回顶部 ↑</a>
+</footer>
+
+<script src="js/site.js"></script>
+</body>
+</html>

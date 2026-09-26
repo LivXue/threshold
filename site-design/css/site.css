@@ -1,0 +1,324 @@
+/* THRESHOLD 阈限 — 页面温度 = 战斗进度。--hot 由 js/site.js 按滚动位置写入。 */
+
+@font-face { font-family: "Anton"; src: url(../fonts/anton-latin-400-normal.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Barlow Condensed"; src: url(../fonts/barlow-condensed-latin-500-normal.woff2) format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Barlow Condensed"; src: url(../fonts/barlow-condensed-latin-600-normal.woff2) format("woff2"); font-weight: 600; font-display: swap; }
+
+:root {
+  --black: #000;
+  --ink: #e6e9ed;
+  --mute: #a3adb8;           /* 次级文字，黑底对比 ≈ 8.6:1 */
+  --line: rgba(255,255,255,.14);
+  --hot: #8fa3b8;            /* 冷灰蓝起点；JS 写入 */
+  --heat: 0;
+  --f-display: "Anton", "Noto Sans SC", sans-serif;
+  --f-zh: "Noto Sans SC", sans-serif;
+  --f-label: "Barlow Condensed", "Noto Sans SC", sans-serif;
+  --pad: clamp(20px, 4vw, 64px);
+}
+
+* { box-sizing: border-box; }
+html { background: var(--black); color: var(--ink); scroll-behavior: smooth; }
+body { margin: 0; font: 400 17px/1.75 var(--f-zh); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+img { display: block; max-width: 100%; height: auto; }
+p, h2, h3, dd, figcaption { text-wrap: pretty; }
+figure { margin: 0; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, p, ol, dl, dd { margin: 0; padding: 0; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--hot); outline-offset: 4px; }
+
+.big {
+  font: 900 clamp(64px, 11vw, 176px)/.92 var(--f-zh);
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
+
+/* ---------- 顶栏 ---------- */
+.bar {
+  position: fixed; inset: 0 0 auto 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px var(--pad) 30px;
+  background: linear-gradient(to bottom, rgba(0,0,0,.82), rgba(0,0,0,.45) 60%, rgba(0,0,0,0));
+}
+.mark { display: flex; align-items: baseline; gap: 10px; }
+.mark-en { font: 400 22px/1 var(--f-display); letter-spacing: .06em; }
+.mark-zh { font: 900 17px/1 var(--f-zh); }
+.nav { display: flex; gap: clamp(18px, 3vw, 44px); }
+.nav a { font: 500 16px/1 var(--f-zh); letter-spacing: .3em; padding: 8px 0; position: relative; }
+.nav a::after { content: ""; position: absolute; left: 0; right: .3em; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .25s; }
+.nav a:hover::after, .nav a.is-current::after { transform: scaleX(1); }
+/* 语言切换：与板块导航分开，只是一个去另一语言版本的链接 */
+.bar .nav { margin-left: auto; }
+.lang { margin-left: clamp(22px, 3.4vw, 52px); padding: 8px 0; font: 600 17px/1 var(--f-label); letter-spacing: .08em; color: var(--mute); transition: color .25s; }
+.lang:lang(zh-CN) { font: 500 16px/1 var(--f-zh); letter-spacing: .12em; }
+.lang:hover { color: var(--hot); }
+
+/* ---------- HERO · 转盘 ---------- */
+.hero {
+  position: relative; height: 100vh; height: 100svh; min-height: 560px;
+  overflow: hidden; background: #000;
+}
+.tt {
+  position: absolute; left: 50%; top: 45%;
+  width: min(104vw, 126vh); aspect-ratio: 4 / 3;
+  transform: translate(-50%, -50%);
+  cursor: grab; touch-action: pan-y;
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 58%, transparent 100%);
+          mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 58%, transparent 100%);
+}
+.tt:active { cursor: grabbing; }
+.tt:focus-visible { outline: none; }
+.tt canvas { width: 100%; height: 100%; display: block; }
+
+.hero-line {
+  position: absolute; left: var(--pad); top: clamp(88px, 16vh, 150px);
+  font: 400 clamp(17px, 1.35vw, 21px)/1.7 var(--f-zh);
+  color: var(--mute); max-width: 22em;
+}
+.hero-title {
+  position: absolute; left: var(--pad); right: var(--pad); bottom: clamp(18px, 3vh, 36px);
+  display: flex; align-items: flex-end; gap: .12em;
+  pointer-events: none; line-height: .8;
+}
+.t-en {
+  font: 400 min(16.5vw, 29vh)/.8 var(--f-display);
+  letter-spacing: -.005em; color: var(--ink);
+}
+.hero .t-en { color: #d5dce4; }
+.t-zh {
+  white-space: nowrap; flex-shrink: 0;
+  font: 900 min(5.6vw, 9.6vh)/1 var(--f-zh);
+  color: var(--hot); padding-bottom: .06em;
+}
+
+.dial {
+  position: absolute; right: var(--pad); top: clamp(88px, 16vh, 150px);
+  width: min(300px, 36vw); text-align: right;
+  font-family: var(--f-label); text-transform: uppercase;
+}
+.dial-read { font: 600 44px/1 var(--f-label); letter-spacing: .04em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.dial-ticks { display: flex; justify-content: space-between; align-items: flex-end; height: 16px; margin: 12px 0 10px; }
+.dial-ticks i { width: 1px; height: 6px; background: rgba(255,255,255,.18); transition: background .3s; }
+.dial-ticks i:nth-child(9n+1) { height: 11px; }
+.dial-ticks i.ok { background: rgba(255,255,255,.5); }
+.dial-ticks i.now { background: var(--hot); height: 16px; width: 2px; }
+.dial-hint { font: 500 16px/1 var(--f-zh); letter-spacing: .3em; color: var(--mute); }
+
+/* ---------- 战斗进程 ---------- */
+.fight { position: relative; height: 700vh; }
+.fight-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: #000; }
+.shots img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; will-change: opacity; transition: opacity .6s ease;
+  filter: saturate(calc(.3 + var(--heat) * .95)) brightness(calc(.72 + var(--heat) * .48)) contrast(1.06);
+}
+.shots img.on { opacity: 1; }
+.fight-stage::after {         /* 可读性 scrim：只压底部与左侧 */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(0,0,0,.94), rgba(0,0,0,.6) 22%, rgba(0,0,0,0) 52%),
+    linear-gradient(to right, rgba(0,0,0,.6), rgba(0,0,0,0) 55%);
+}
+.fight-stage::before {        /* 温度调色：冷蓝 → 橙红，颜色与 --hot 同一根轴 */
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: var(--hot); mix-blend-mode: soft-light; opacity: calc(.55 + var(--heat) * .25);
+}
+.fight-stage::after { z-index: 2; }
+.flash { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; background: #fff6ec; }
+.flash::after {                /* 扫描线：全站第一处（共两处） */
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,.28) 0 1px, transparent 1px 3px);
+}
+.flash.go { animation: flash .9s ease-out; }
+@keyframes flash {
+  0% { opacity: 0; } 8% { opacity: .95; } 22% { opacity: .35; } 30% { opacity: .7; } 100% { opacity: 0; }
+}
+
+.beats { position: absolute; z-index: 4; left: var(--pad); bottom: clamp(40px, 10vh, 110px); width: min(640px, 84vw); }
+.beat { position: absolute; left: 0; bottom: 0; width: 100%; opacity: 0; transform: translateY(24px); transition: opacity .45s, transform .45s; }
+.beat.on { opacity: 1; transform: none; }
+.beat h2 { font: 900 clamp(56px, 8.4vw, 136px)/.95 var(--f-zh); letter-spacing: -.02em; color: var(--ink); text-shadow: 0 0 calc(var(--heat) * 40px) rgba(255,90,30,calc(var(--heat) * .45)); }
+.beat p { margin-top: 18px; font-size: clamp(17px, 1.3vw, 20px); color: var(--ink); max-width: 26em; }
+
+.beat-nav { position: absolute; z-index: 4; right: var(--pad); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 6px; }
+.beat-nav button { width: 44px; height: 28px; position: relative; }
+.beat-nav button::before { content: ""; position: absolute; right: 0; top: 50%; height: 2px; width: 18px; background: rgba(255,255,255,.35); transition: width .3s, background .3s; }
+.beat-nav button:hover::before { background: rgba(255,255,255,.8); }
+.beat-nav button[aria-current="step"]::before { width: 40px; background: var(--hot); }
+
+/* ---------- 击杀过场 ---------- */
+.killcam { background: #000; padding: 0 0 clamp(60px, 10vw, 140px); }
+.cg img { width: 100%; height: auto; }
+.cg-main img { filter: saturate(1.15) contrast(1.05); }
+.cg-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+
+/* ---------- 读招 ---------- */
+.warden { padding: clamp(80px, 12vw, 180px) var(--pad) clamp(80px, 10vw, 160px); }
+.warden-head { display: grid; grid-template-columns: auto 1fr; gap: clamp(24px, 5vw, 80px); align-items: end; margin-bottom: clamp(48px, 7vw, 100px); }
+.warden-head .big { color: var(--hot); }
+.warden-head p { max-width: 24em; color: var(--mute); padding-bottom: .6em; }
+.warden-body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+.moves { list-style: none; border-top: 1px solid var(--line); }
+.moves li { display: grid; grid-template-columns: minmax(0, 1fr); padding: 22px 0 20px; border-bottom: 1px solid var(--line); }
+.moves h3 { font: 900 clamp(34px, 3.6vw, 58px)/1.05 var(--f-zh); letter-spacing: -.01em; }
+.moves p { margin-top: 6px; color: var(--mute); }
+.warden-shot { position: sticky; top: 90px; }
+.warden-shot img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.warden-shot figcaption { margin-top: 14px; font: 500 16px/1 var(--f-zh); letter-spacing: .3em; color: var(--hot); }
+
+.arms { margin-top: clamp(100px, 14vw, 200px); display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); }
+.arms-title { font: 900 clamp(40px, 4.6vw, 76px)/1.05 var(--f-zh); letter-spacing: -.02em; }
+.arms dl > div { display: grid; grid-template-columns: 11em 1fr; gap: 24px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+.arms dl > div:first-child { border-top: 1px solid var(--line); }
+.arms dt { font: 900 22px/1.5 var(--f-zh); }
+.arms dd { color: var(--mute); }
+kbd { font: 600 17px/1 var(--f-label); border: 1px solid var(--hot); color: var(--hot); padding: 3px 8px 2px; margin-left: 6px; vertical-align: 2px; }
+.feel { grid-column: 2; margin-top: 28px; color: var(--ink); }
+
+/* ---------- 进化史 ---------- */
+.evo { position: relative; height: 520vh; }
+.evo-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; }
+.evo-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 0 var(--pad); margin-bottom: clamp(24px, 4vh, 48px); }
+.evo-head .big { font-size: clamp(56px, 8vw, 128px); color: var(--hot); transition: color .6s; }
+.evo-index { display: flex; gap: 4px; }
+.evo-index button { font: 600 18px/1 var(--f-label); letter-spacing: .18em; padding: 12px 14px 10px; color: var(--mute); border-bottom: 2px solid transparent; transition: color .3s, border-color .3s; }
+.evo-index button:hover { color: var(--ink); }
+.evo-index button[aria-selected="true"] { color: var(--ink); border-color: var(--hot); }
+
+.evo-track { display: flex; gap: clamp(24px, 3vw, 48px); padding: 0 var(--pad); will-change: transform; }
+.stage { flex: 0 0 min(64vw, 118vh); opacity: .32; transition: opacity .5s; }
+.stage.on { opacity: 1; }
+.stage-media { position: relative; aspect-ratio: 16 / 9; background: #07090c; overflow: hidden; }
+.stage-media img { width: 100%; height: 100%; object-fit: cover; }
+.stage-media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; pointer-events: none; }
+.stage-media video.play { opacity: 1; }
+.stage-media.scan::after {     /* 扫描线：全站第二处（灰盒原型） */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,.35) 0 1px, transparent 1px 3px);
+  mix-blend-mode: multiply;
+}
+.stage-text { display: grid; grid-template-columns: auto auto 1fr; align-items: baseline; gap: 20px; margin-top: 18px; }
+.stage-id { font: 600 18px/1 var(--f-label); letter-spacing: .18em; color: var(--hot); }
+.stage h3 { font: 900 clamp(28px, 2.6vw, 42px)/1 var(--f-zh); }
+.stage p { color: var(--mute); max-width: 30em; }
+
+/* ---------- 幕后 ---------- */
+.pipe { padding: clamp(100px, 14vw, 200px) 0 clamp(60px, 8vw, 120px); background: #000; }
+.pipe-head { display: grid; grid-template-columns: auto 1fr; gap: clamp(24px, 5vw, 80px); align-items: end; padding: 0 var(--pad); margin-bottom: clamp(48px, 7vw, 100px); }
+.pipe-head p { max-width: 26em; color: var(--mute); padding-bottom: .6em; }
+.pipe-grid {
+  display: grid; padding: 0 var(--pad);
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  grid-template-rows: auto auto; gap: clamp(28px, 4vw, 64px) clamp(24px, 4vw, 64px);
+}
+.p-meshy { grid-column: 1; grid-row: 1; }
+.p-tripo { grid-column: 1; grid-row: 2; width: 82%; justify-self: end; }
+.p-anim  { grid-column: 2; grid-row: 1 / span 2; }
+.p-step img { width: 100%; height: auto; }
+.p-step figcaption { margin-top: 16px; color: var(--mute); max-width: 34em; }
+.p-step figcaption b { font: 900 20px/1.4 var(--f-zh); color: var(--ink); margin-right: .7em; }
+.ver { display: inline-block; font: 600 16px/1 var(--f-label); letter-spacing: .18em; text-transform: uppercase; color: var(--hot); margin-right: 14px; vertical-align: 1px; }
+.p-render { margin-top: clamp(64px, 9vw, 140px); }
+.p-render figcaption { padding: 0 var(--pad); }
+
+/* ---------- 页脚 ---------- */
+.foot { padding: clamp(80px, 12vw, 180px) var(--pad) 40px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px; }
+.foot-mark { grid-column: 1 / -1; display: flex; align-items: flex-end; gap: .12em; line-height: .8; }
+.foot-mark .t-en { font-size: min(19vw, 300px); color: var(--hot); }
+.foot-mark .t-zh { font-size: min(6.4vw, 100px); color: var(--ink); }
+.foot p { color: var(--mute); }
+.foot-top { font: 500 16px/1 var(--f-zh); letter-spacing: .3em; padding: 10px 0; }
+.foot-top:hover { color: var(--hot); }
+
+/* ---------- 手机 ---------- */
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  .bar { padding: 14px 18px; }
+  .mark-en { font-size: 19px; }
+  .mark-zh { display: none; }
+  .nav { gap: 16px; }
+  .nav a { font-size: 15px; letter-spacing: .2em; }
+  .lang { margin-left: 14px; font-size: 15px; }
+  html[lang="en"] .nav { gap: 11px; }
+  html[lang="en"] .nav a { font-size: 16px; white-space: nowrap; }
+  html[lang="en"] .lang { margin-left: 12px; }
+  .tt { width: 170vw; top: 47%; }
+  .hero-line { top: 78px; font-size: 16px; }
+  .dial { top: auto; bottom: calc(min(19vw, 33vh) * .8 + 44px); right: 18px; width: 58vw; }
+  .dial-read { font-size: 32px; }
+  .beat-nav { right: 8px; }
+  .beat-nav button { width: 32px; }
+  .beat-nav button[aria-current="step"]::before { width: 28px; }
+  .beats { width: calc(100vw - 72px); }
+  .warden-head, .pipe-head { grid-template-columns: 1fr; }
+  .warden-body, .arms { grid-template-columns: 1fr; }
+  .warden-shot { position: static; order: -1; }
+  .arms dl > div { grid-template-columns: 1fr; gap: 4px; }
+  .feel { grid-column: 1; }
+  .evo-head { flex-direction: column; align-items: flex-start; }
+  .stage { flex-basis: 84vw; }
+  .stage-text { grid-template-columns: auto 1fr; }
+  .stage-text p { grid-column: 1 / -1; }
+  .pipe-grid { grid-template-columns: 1fr; }
+  .p-meshy, .p-tripo, .p-anim { grid-column: 1; grid-row: auto; width: 100%; }
+  .cg-pair { grid-template-columns: 1fr; }
+  .foot { grid-template-columns: 1fr; }
+}
+
+/* ---------- 英文版（site-design/en/）----------
+   中文版用 Noto Sans SC 900 做大标题；英文对应的是与 THRESHOLD 字标同一款 Anton。
+   全大写只落在 Anton 展示字上，导航与说明保持句式大小写、不拉字距。 */
+html[lang="en"] body { line-height: 1.6; }
+html[lang="en"] .nav a { font: 600 19px/1 var(--f-label); letter-spacing: .02em; }
+html[lang="en"] .nav a::after { right: 0; }
+html[lang="en"] .big,
+html[lang="en"] .beat h2,
+html[lang="en"] .moves h3,
+html[lang="en"] .arms-title,
+html[lang="en"] .stage h3 { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; letter-spacing: .005em; }
+html[lang="en"] .big { line-height: .9; }
+html[lang="en"] .beats { width: min(900px, 84vw); }
+html[lang="en"] .beat h2 { font-size: clamp(56px, 7.6vw, 128px); line-height: .92; }
+html[lang="en"] .beat p { max-width: 32em; }
+html[lang="en"] .hero-line { max-width: 27em; }
+html[lang="en"] .dial-hint { font: 600 18px/1 var(--f-label); letter-spacing: .06em; text-transform: none; }
+html[lang="en"] .moves h3 { font-size: clamp(34px, 3.4vw, 54px); line-height: 1; }
+html[lang="en"] .arms-title { font-size: clamp(40px, 4.4vw, 72px); line-height: 1; }
+html[lang="en"] .arms dl > div { grid-template-columns: 13em 1fr; }
+html[lang="en"] .arms dt { font: 600 23px/1.3 var(--f-label); letter-spacing: .01em; }
+html[lang="en"] .stage h3 { font-size: clamp(28px, 2.5vw, 40px); }
+html[lang="en"] .warden-shot figcaption { font: 600 18px/1.2 var(--f-label); letter-spacing: .04em; }
+html[lang="en"] .p-step figcaption b { font: 600 22px/1.3 var(--f-label); letter-spacing: .01em; }
+html[lang="en"] .foot-top { font: 600 18px/1 var(--f-label); letter-spacing: .04em; }
+
+@media (max-width: 760px) {   /* 英文版覆盖写在手机规则之后，这里把手机版式补回来 */
+  html[lang="en"] .arms dl > div { grid-template-columns: 1fr; gap: 4px; }
+  html[lang="en"] .beats { width: calc(100vw - 72px); }
+}
+
+/* 窄屏顶栏：字标 + 四个板块 + 语言切换挤在一行，逐项收紧，保证不折行 */
+.bar > * { white-space: nowrap; flex-shrink: 0; }
+@media (max-width: 430px) {
+  .bar { padding-left: 14px; padding-right: 14px; }
+  .mark-en { font-size: 17px; }
+  .nav { gap: 12px; }
+  .nav a { font-size: 14px; letter-spacing: .14em; }
+  .lang { margin-left: 12px; font-size: 14px; }
+  html[lang="en"] .nav { gap: 9px; }
+  html[lang="en"] .nav a { font-size: 15px; letter-spacing: 0; }
+  html[lang="en"] .lang { margin-left: 10px; font-size: 14px; letter-spacing: 0; }
+}
+@media (max-width: 350px) {
+  .mark-en { font-size: 15px; }
+  .nav { gap: 9px; }
+  .nav a { letter-spacing: .06em; }
+  html[lang="en"] .nav { gap: 7px; }
+  html[lang="en"] .nav a { font-size: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .flash.go { animation: none; }
+  .beat, .stage, .nav a::after { transition: none; }
+}

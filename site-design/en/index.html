@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THRESHOLD</title>
+<meta name="description" content="Face a rogue mechanical beast deep underground. Read its attacks, shatter its core, and unleash Overload in THRESHOLD, an FPS built around colossal boss battles.">
+<link rel="icon" href="../assets/favicon.png">
+<link rel="alternate" hreflang="zh-CN" href="../">
+<link rel="alternate" hreflang="en" href="./">
+<link rel="preload" href="../fonts/anton-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/noto-sc.css">
+<link rel="stylesheet" href="../css/site.css">
+</head>
+<body>
+
+<header class="bar">
+  <a class="mark" href="#top" aria-label="THRESHOLD, back to top"><span class="mark-en">THRESHOLD</span><span class="mark-zh" lang="zh-CN">阈限</span></a>
+  <nav class="nav" aria-label="Page navigation">
+    <a href="#fight">Fight</a>
+    <a href="#warden">Moves</a>
+    <a href="#evolution">Evolution</a>
+    <a href="#pipeline">Making of</a>
+  </nav>
+  <a class="lang" href="../" hreflang="zh-CN" lang="zh-CN">中文</a>
+</header>
+
+<main>
+
+<!-- ============ HERO · turntable ============ -->
+<section class="hero" id="top" data-heat="0">
+  <div class="tt" id="turntable" tabindex="0" role="slider"
+       aria-label="360° view of the Threshold Warden. Drag left or right, or use the left and right arrow keys, to rotate"
+       aria-valuemin="0" aria-valuemax="355" aria-valuenow="0" aria-valuetext="0 degrees">
+    <canvas id="tt-canvas"></canvas>
+  </div>
+
+  <p class="hero-line">Deep underground, the Warden awakens.<br>Break its core. Seal the floodgate.</p>
+
+  <h1 class="hero-title">
+    <span class="t-en">THRESHOLD</span>
+    <span class="t-zh" lang="zh-CN" aria-hidden="true">阈限</span>
+  </h1>
+
+  <div class="dial" aria-hidden="true">
+    <div class="dial-read"><span id="tt-deg">000</span>°</div>
+    <div class="dial-ticks" id="tt-ticks"></div>
+    <div class="dial-hint">Drag to rotate</div>
+  </div>
+</section>
+
+<!-- ============ Fight ============ -->
+<section class="fight" id="fight" aria-label="The fight">
+  <div class="fight-stage">
+    <div class="shots">
+      <img src="../../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/01_arena_gate.jpg" alt="The entrance to the main pump hall, with the dormant Warden in the distance" loading="lazy" decoding="async" width="1920" height="1080">
+      <img src="../../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/02_warden_approach.jpg" alt="The Warden closes in, jaws open" loading="lazy" decoding="async" width="1920" height="1080">
+      <img src="../../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/05_core_burst.jpg" alt="The Warden's molten core bursts in a flash of fire" loading="lazy" decoding="async" width="1920" height="1080">
+      <img src="../../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/08_phase_two.jpg" alt="Phase two: the Warden lunges forward as its armor breaks away" loading="lazy" decoding="async" width="1920" height="1080">
+      <img src="../../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/11_overload_flash.jpg" alt="The Overload beam hits the core" loading="lazy" decoding="async" width="1920" height="1080">
+      <img src="../../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/12_killcam.jpg" alt="The final moments before the Warden collapses onto the grating above the furnace" loading="lazy" decoding="async" width="1920" height="1080">
+    </div>
+    <div class="flash" aria-hidden="true"></div>
+
+    <div class="beats">
+      <article class="beat">
+        <h2>Pull the lever</h2>
+        <p>The main pump is overloading. The floodgate won't close. Everyone else is out. You're still inside.</p>
+      </article>
+      <article class="beat">
+        <h2>It awakens</h2>
+        <p>It never powered down. You're the fault it's here to fix.</p>
+      </article>
+      <article class="beat">
+        <h2>Crack the core</h2>
+        <p>Dodge the slam. Jump the shockwave. Pour fire into the exposed core.</p>
+      </article>
+      <article class="beat">
+        <h2>Armor shatters</h2>
+        <p>Chest armor shatters. Its glow turns blood red. The next assault hits harder.</p>
+      </article>
+      <article class="beat">
+        <h2>Overload</h2>
+        <p>Fill the 13-bar energy gauge. Hit Q. Send a blue beam through its core and end the fight with one critical hit.</p>
+      </article>
+      <article class="beat">
+        <h2>The gate closes</h2>
+        <p>One last shot. The Warden crashes down. The camera pulls back as the floodgate seals shut.</p>
+      </article>
+    </div>
+
+    <nav class="beat-nav" aria-label="Jump to a moment in the fight">
+      <button type="button" aria-label="Pull the lever"></button>
+      <button type="button" aria-label="It awakens"></button>
+      <button type="button" aria-label="Crack the core"></button>
+      <button type="button" aria-label="Armor shatters"></button>
+      <button type="button" aria-label="Overload"></button>
+      <button type="button" aria-label="The gate closes"></button>
+    </nav>
+  </div>
+</section>
+
+<!-- ============ Kill cam ============ -->
+<section class="killcam" data-heat="1" aria-label="Finishing sequence">
+  <figure class="cg cg-main">
+    <img src="../../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/13_cg_detonation.jpg" alt="The finishing sequence: the Warden's core detonates" loading="lazy" decoding="async" width="1920" height="814">
+  </figure>
+  <div class="cg-pair">
+    <figure class="cg"><img src="../../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/14_cg_roar.jpg" alt="The finishing sequence: the Warden's final roar" loading="lazy" decoding="async" width="1920" height="814"></figure>
+    <figure class="cg"><img src="../../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/15_cg_fall.jpg" alt="The finishing sequence: the Warden collapses" loading="lazy" decoding="async" width="1920" height="814"></figure>
+  </div>
+</section>
+
+<!-- ============ Tells ============ -->
+<section class="warden" id="warden" data-heat="0.85">
+  <div class="warden-head">
+    <h2 class="big">Read its moves</h2>
+    <p>A molten core burns inside a machine taller than the plant's columns. Five deadly attacks stand between you and that core. Read its moves. Find your opening.</p>
+  </div>
+
+  <div class="warden-body">
+    <ol class="moves">
+      <li><h3>Ground slam</h3><p>Stay clear of the impact and jump over the spreading shockwave.</p></li>
+      <li><h3>Core beam</h3><p>The beam locks onto your position. Dodge sideways to escape.</p></li>
+      <li><h3>Slag barrage</h3><p>Molten slag rains down from over thirty meters above. Watch where it will land and get clear.</p></li>
+      <li><h3>Charge</h3><p>It hurls its entire bulk straight at you. Get out of its path.</p></li>
+      <li><h3>Tail sweep</h3><p>Keep your distance and jump over the shockwave sweeping across the floor.</p></li>
+    </ol>
+    <figure class="warden-shot">
+      <img src="../../Threshold_宣传素材包_2026-09-24/01_宣传截图/网页JPG/09_core_beam.jpg" alt="A searing beam from the Warden's core sweeps across the floor" loading="lazy" decoding="async" width="1920" height="1080">
+      <figcaption>Core beam incoming. Dodge sideways.</figcaption>
+    </figure>
+  </div>
+
+  <div class="arms">
+    <h2 class="arms-title">Your arsenal</h2>
+    <dl>
+      <div><dt>Heavy repeater rifle</dt><dd>30 rounds. Relentless fire. Control the recoil and hammer its weak points with short bursts.</dd></div>
+      <div><dt>Breaching shotgun</dt><dd>Close the gap while it vents heat. One shot at close range blows its chest armor open.</dd></div>
+      <div><dt>Overload <kbd>Q</kbd></dt><dd>Fill the 13-bar energy gauge and unleash a blue beam. A critical hit to the core ends it in one shot.</dd></div>
+    </dl>
+    <p class="feel">Guns kick. Brass flies. Hits land hard. When the Warden slams down, the arena shakes beneath your feet.</p>
+  </div>
+</section>
+
+<!-- ============ Evolution ============ -->
+<section class="evo" id="evolution" aria-label="Development history">
+  <div class="evo-stage">
+    <div class="evo-head">
+      <h2 class="big">Evolution</h2>
+      <div class="evo-index" role="tablist" aria-label="Choose a development stage">
+        <button type="button" role="tab" aria-selected="true">S1</button>
+        <button type="button" role="tab" aria-selected="false">S2</button>
+        <button type="button" role="tab" aria-selected="false">S3</button>
+        <button type="button" role="tab" aria-selected="false">S4</button>
+        <button type="button" role="tab" aria-selected="false">S5</button>
+      </div>
+    </div>
+
+    <div class="evo-track">
+      <article class="stage" data-heat="0" data-video="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s1_fight.mp4">
+        <div class="stage-media scan">
+          <img src="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s1_idle.jpg" data-idle="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s1_idle.jpg" alt="S1: the first prototype, a cylinder topped with an orange sphere" loading="lazy" decoding="async" width="1600" height="900">
+        </div>
+        <div class="stage-text"><span class="stage-id">S1</span><h3>First prototype</h3><p>The boss started as a cylinder, its core an orange sphere in an empty, coldly lit arena.</p></div>
+      </article>
+      <article class="stage" data-heat="0.12" data-video="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s2_fight.mp4">
+        <div class="stage-media">
+          <img src="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s2_idle.jpg" data-idle="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s2_idle.jpg" alt="S2: the Warden's four-legged form makes its first appearance in the arena" loading="lazy" decoding="async" width="1600" height="900">
+        </div>
+        <div class="stage-text"><span class="stage-id">S2</span><h3>Taking shape</h3><p>The Warden took on its four-legged form, and railings lined the arena.</p></div>
+      </article>
+      <article class="stage" data-heat="0.3" data-video="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s3_fight.mp4">
+        <div class="stage-media">
+          <img src="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s3_idle.jpg" data-idle="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s3_idle.jpg" alt="S3: the Warden clad in metal armor, with an orange glow inside its jaws" loading="lazy" decoding="async" width="1600" height="900">
+        </div>
+        <div class="stage-text"><span class="stage-id">S3</span><h3>Armored up</h3><p>Metal armor. Glowing jaws. The Warden came to life, and you got a copper-colored hand cannon.</p></div>
+      </article>
+      <article class="stage" data-heat="0.55" data-video="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s4_fight.mp4">
+        <div class="stage-media">
+          <img src="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s4_idle.jpg" data-idle="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s4_idle.jpg" alt="S4: the player faces the Warden's exposed molten core with a railgun in hand" loading="lazy" decoding="async" width="1600" height="900">
+        </div>
+        <div class="stage-text"><span class="stage-id">S4</span><h3>Core exposed</h3><p>The core became your target. You could now wield a railgun, jump to evade attacks, and use machinery around the arena.</p></div>
+      </article>
+      <article class="stage" data-heat="1" data-video="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s5_fight.mp4">
+        <div class="stage-media">
+          <img src="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s5_idle.jpg" data-idle="../../Threshold_宣传素材包_2026-09-24/03_进化史各阶段/s5_idle.jpg" alt="S5: the Threshold Warden in the furnace arena" loading="lazy" decoding="async" width="1600" height="900">
+        </div>
+        <div class="stage-text"><span class="stage-id">S5</span><h3>Into the furnace</h3><p>The arena rose above a furnace pit. The Warden took its current form. The stage was set for the final showdown.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Making of · asset pipeline ============ -->
+<section class="pipe" id="pipeline" data-heat="0.2">
+  <div class="pipe-head">
+    <h2 class="big">Forging<br>the beast</h2>
+    <p>The Warden started with models generated in Meshy and Tripo. Animation work and Blender renders brought it to life.</p>
+  </div>
+
+  <div class="pipe-grid">
+    <figure class="p-step p-meshy">
+      <img src="../../Threshold_宣传素材包_2026-09-24/04_资产管线配图/起点_Meshy模型.jpg" alt="The first Meshy model: a mechanical beast with spikes and a hooked tail" loading="lazy" decoding="async" width="960" height="760">
+      <figcaption><span class="ver">Start</span><b>Meshy</b>The first design: spikes, a hooked tail, and an orange glow in its chest.</figcaption>
+    </figure>
+    <figure class="p-step p-tripo">
+      <img src="../../Threshold_宣传素材包_2026-09-24/04_资产管线配图/v1_Tripo生成.jpg" alt="The Tripo v1 model, with each part shown in a different color" loading="lazy" decoding="async" width="1000" height="760">
+      <figcaption><span class="ver">v1</span><b>Tripo</b>A taller stance and longer legs, with the back armor and tail split into separate parts.</figcaption>
+    </figure>
+    <figure class="p-step p-anim">
+      <img src="../../Threshold_宣传素材包_2026-09-24/04_资产管线配图/v6_动作剪影.jpg" alt="v6 animation silhouettes: key poses from six animations, viewed from the front and side" loading="lazy" decoding="async" width="1260" height="2160">
+      <figcaption><span class="ver">v6</span><b>Animation silhouettes</b>Four attacks, a phase transition, and a death animation. Key poses were checked from both the front and the side.</figcaption>
+    </figure>
+  </div>
+
+  <figure class="p-step p-render">
+    <img src="../../Threshold_宣传素材包_2026-09-24/02_Boss环绕图/boss_8views.jpg" alt="The current model rendered from eight angles" loading="lazy" decoding="async" width="2880" height="1080">
+    <figcaption><span class="ver">Now</span><b>Blender 5.2</b>Eight views of the current model. Blender also produced the 72 frames used in the interactive view at the top of the page.</figcaption>
+  </figure>
+</section>
+
+</main>
+
+<footer class="foot" data-heat="1">
+  <a class="foot-mark" href="#top" aria-label="THRESHOLD, back to top"><span class="t-en">THRESHOLD</span><span class="t-zh" lang="zh-CN">阈限</span></a>
+  <p>One colossal machine. One brutal FPS showdown. Platforms and release details to be announced.</p>
+  <a class="foot-top" href="#top">Back to top ↑</a>
+</footer>
+
+<script src="../js/site.js"></script>
+</body>
+</html>
